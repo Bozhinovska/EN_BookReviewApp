@@ -77,7 +77,7 @@ EN_BookReviewApp/
 * Run `database.py` **only the first time** to initialize your database.
 * Afterwards, just run `app.py` to start the app.
 * Default Flask port is **5000**, so the app is accessible at:
-  👉 [http://127.0.0.1:5000](http://127.0.0.1:5000)
+[http://127.0.0.1:5000](http://127.0.0.1:5000)
 
 
 ```
