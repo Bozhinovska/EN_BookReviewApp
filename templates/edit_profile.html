@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Edit Profile</title>
+</head>
+<body>
+<div class="container-editProfile">
+    <div class="menu">
+        <div class="menu-items">
+            <a href="{{ url_for('my_profile') }}">My Profile</a>
+        </div>
+    </div>
+    <h1>Edit Profile</h1>
+
+    <form class="form-editProfile" method="POST" enctype="multipart/form-data" action="{{ url_for('edit_profile') }}">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" value="{{ user['name'] }}" required><br>
+
+        <label for="surname">Surname:</label><br>
+        <input type="text" id="surname" name="surname" value="{{ user['surname'] }}" required><br>
+
+        <label for="email">E-mail:</label><br>
+        <input type="text" id="email" name="email" value="{{ user['email'] }}" required><br>
+
+        <label for="password">New password (leave blank if you don’t want to change it):</label><br>
+        <input type="password" id="password" name="password"><br>
+
+        <input type="hidden" name="current_profile_picture" value="{{ user['profile_picture'] }}">
+
+        <label for="profile_picture">Profile picture:</label>
+        <input type="file" name="profile_picture" id="profile_picture"><br>
+
+        <button type="submit">Save changes</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+</body>
+</html>

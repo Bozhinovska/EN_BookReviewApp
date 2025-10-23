@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <title>Book Details</title>
+</head>
+<body>
+<div class="container">
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <div class="menu">
+        <div class="menu-items">
+            <a href="{{ url_for('home') }}">Home</a>
+            {% if 'user_id' in session %}
+                <a href="{{ url_for('my_profile') }}">My Profile</a>
+                <a href="{{ url_for('logout') }}">Log Out</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="book-content">
+        <div class="book-sidebar">
+            <img src="{{ url_for('static', filename='images/' + book['book_cover_image']) }}" alt="book-cover"
+                 class="book-cover">
+            {% if 'user_id' in session %}
+                <form method="POST" action="{{ url_for('add_favorite', book_id=book['book_id']) }}">
+                    <button type="submit" class="favorite-button">Add to favorites</button>
+                </form>
+            {% endif %}
+        </div>
+
+        <div class="book-details">
+            <h1>{{ book['title'] }}</h1>
+            <p class="author">Author: {{ book['author'] }}</p>
+            <p class="description">{{ book['description'] }}</p>
+
+            <h2>Reviews</h2>
+            <div class="book-reviews">
+                {% if reviews %}
+                    <ul>
+                        {% for review in reviews %}
+                            <li>
+                                <strong>Rate: {{ review['rating'] }}</strong><br>
+                                <p>{{ review['content'] }}</p>
+                                <p><small>Added on: {{ review['reviews_date'] }}</small></p>
+                                <p>{{ review['name'] }} {{ review['surname'] }}</p>
+
+                                {% if session['user_id'] == review['user_id'] %}
+                                    <button data-review-id="{{ review['review_id'] }}" onclick="showEditForm(this)">
+                                        Edit
+                                    </button>
+
+                                    <div id="edit-form-{{ review['review_id'] }}" style="display: none;">
+                                        <form method="POST"
+                                              action="{{ url_for('book_details', book_id=book['book_id']) }}">
+                                            <input type="hidden" name="review_id" value="{{ review['review_id'] }}">
+                                            <label for="content">Edit review:</label><br>
+                                            <textarea name="content">{{ review['content'] }}</textarea><br>
+                                            <label for="rating">Rate (1-5):</label><br>
+                                            <input type="number" name="rating" value="{{ review['rating'] }}" min="1"
+                                                   max="5"><br>
+                                            <button type="submit">Save changes</button>
+                                        </form>
+                                    </div>
+
+                                    <form method="POST"
+                                          action="{{ url_for('delete_review', review_id=review['review_id']) }}"
+                                          style="display:inline;">
+                                        <button type="submit"
+                                                onclick="return confirm('Are you sure you want to delete the review?')">
+                                            Delete
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>There are no reviews for this book.</p>
+                {% endif %}
+            </div>
+
+            {% if 'user_id' in session %}
+                <div class="review-form">
+                    <h2>Leave a review:</h2>
+                    <form method="POST" action="{{ url_for('add_review', book_id=book['book_id']) }}">
+                        <label for="content">Content:</label><br>
+                        <textarea name="content" id="content" required></textarea><br>
+
+                        <label for="rating">Rating (1-5):</label><br>
+                        <input type="number" name="rating" id="rating" min="1" max="5" required><br>
+
+                        <button type="submit">Add review</button>
+                    </form>
+                </div>
+            {% else %}
+                <p class="najava">You must be logged in to add a review. <a href="{{ url_for('login') }}">Log In</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <div class="menu">
+        <div class="menu-items">
+            {% if 'user_id' in session %}
+                <a href="{{ url_for('my_profile') }}">My Profile</a>
+                <a href="{{ url_for('logout') }}">Log Out</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Log In</a>
+                <a href="{{ url_for('register') }}">Sign Up</a>
+            {% endif %}
+        </div>
+        <form class="search-form" onsubmit="return false;">
+            <input type="search" id="search-input" placeholder="Search by title" oninput="searchBooks()">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <section class="hero">
+        <div class="hero-left">
+            <h1>Stories That Belong to You</h1>
+        </div>
+        <div class="hero-right">
+            <ul>
+                <li><a href="/genre/Comedy">Comedy</a></li>
+                <li><a href="/genre/Poetry">Poetry</a></li>
+                <li><a href="/genre/Romance">Romance</a></li>
+                <li><a href="/genre/Fiction">Fiction</a></li>
+                <li><a href="/genre/Horror">Horror</a></li>
+                <li><a href="/genre/Biography">Biography</a></li>
+                <li><a href="/genre/History">History</a></li>
+                <li><a href="/genre/Fantasy">Fantasy</a></li>
+                <li><a href="/genre/Classics">Classics</a></li>
+            </ul>
+        </div>
+    </section>
+    <section class="books-section">
+        <div class="books-grid">
+            {% for book in books %}
+                <div class="book-item">
+                    <a href="{{ url_for('book_details', book_id=book['book_id']) }}" class="card">
+                        <h3 class="book-title">{{ book['title'] }}</h3>
+                        <p>{{ book['author'] }}</p>
+                        <img src="{{ url_for('static', filename='images/' + book['book_cover_image']) }}"
+                             alt="book-cover">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+</body>
+</html>

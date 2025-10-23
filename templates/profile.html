@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>My Profile</title>
+</head>
+<body>
+<div class="container">
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <div class="menu">
+        <div class="menu-items">
+            <a href="{{ url_for('home') }}">Home</a>
+            {% if 'user_id' in session %}
+                <a href="{{ url_for('my_profile') }}">My Profile</a>
+                <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
+                <a href="{{ url_for('logout') }}">Log Out</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Log In</a>
+                <a href="{{ url_for('register') }}">Sign Up</a>
+            {% endif %}
+        </div>
+        <div class="item">
+            <p class="item-right">{{ user['name'] }} {{ user['surname'] }}</p>
+            <img src="{{ url_for('static', filename='images/' + session.get('profile_picture'or 'default_profile.jpeg')) }}"
+                 id="p-picture" alt="Profile-picture">
+        </div>
+    </div>
+    <h2>Favourite Books</h2>
+    <section class="books-section">
+        <div class="books-grid-profile">
+            {% if favourite_books %}
+                {% for book in favourite_books %}
+                    <div class="book-item">
+                        <div class="book-info">
+                            <a href="{{ url_for('book_details', book_id=book['book_id']) }}">{{ book['title'] }}</a>
+                            <form method="POST" action="{{ url_for('remove_favorite', book_id=book['book_id']) }}">
+                                <button type="submit" class="remove-button"
+                                        onclick="return confirm('Are you sure you want to remove the book from your favorites?')">
+                                    Х
+                                </button>
+                            </form>
+                        </div>
+                        <img src="{{ url_for('static', filename='images/' + book['book_cover_image']) }}"
+                             class="book-cover-profile" alt="Book-cover">
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You don’t have any favorite books.</p>
+            {% endif %}
+        </div>
+    </section>
+    <div class="reviewed-books">
+        <h2>Rated books</h2>
+        {% if rated_books %}
+            <ul>
+                {% for book in rated_books %}
+                    <li>
+                        <img src="{{ url_for('static', filename='images/' + book['book_cover_image']) }}"
+                             class="book-cover-profile" alt="book-cover">
+
+                        <a href="{{ url_for('book_details', book_id=book['book_id']) }}">
+                            <strong>{{ book['title'] }}</strong>
+                        </a> - Rating: {{ book['rating'] }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You haven’t rated any books yet.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

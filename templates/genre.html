@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Books by genre: {{ genre }}</title>
+</head>
+<body>
+<div class="container">
+    <div class="menu">
+        <div class="menu-items">
+            <a href="{{ url_for('home') }}">Home</a>
+            {% if 'user_id' in session %}
+                <a href="{{ url_for('my_profile') }}">My Profile</a>
+                <a href="{{ url_for('logout') }}">Log Out</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Log In</a>
+                <a href="{{ url_for('register') }}">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+    <h1 class="title-genre">Books from the {{ genre }} genre</h1>
+    <section class="books-section">
+        <div class="books-grid-genre">
+            {% if books %}
+                {% for book in books %}
+                    <a href="{{ url_for('book_details', book_id=book['book_id']) }}" class="card card-genre">
+                        <h3>{{ book['title'] }}</h3>
+                        <p>{{ book['author'] }}</p>
+                        <img src="{{ url_for('static', filename='images/' + book['book_cover_image']) }}"
+                             alt="Book-cover">
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p>There are no books in this genre.</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
