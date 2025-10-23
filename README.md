@@ -72,7 +72,7 @@ EN_BookReviewApp/
 
 ---
 
-## 💡 Notes
+## Notes
 
 * Run `database.py` **only the first time** to initialize your database.
 * Afterwards, just run `app.py` to start the app.
