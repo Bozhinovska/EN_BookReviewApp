@@ -6,8 +6,6 @@ The current version is **fully translated into English**, including all interfac
 It’s a Flask-based web application that allows users to browse, review, and favourite books.  
 The app uses **SQLite** as a local database and comes with preloaded book data.
 
----
-
 ## How to Run the Project
 
 ### Clone the repository
@@ -34,6 +32,10 @@ This will create `book_reviews.db` and all necessary tables.
 
 ### Run the Flask application
 
+```bash
+python app.py
+```
+If the above command doesn't work (e.g. on macOS or Linux), try:
 ```bash
 python3 app.py
 ```
@@ -68,6 +70,7 @@ EN_BookReviewApp/
 
 ## Notes
 
+* If python
 * Run `database.py` **only the first time** to initialize your database.
 * Afterwards, just run `app.py` to start the app.
 * Default Flask port is **5000**, so the app is accessible at:
