@@ -16,14 +16,6 @@ git clone https://github.com/Bozhinovska/EN_BookReviewApp.git
 cd EN_BookReviewApp
 ````
 
-### (Optional) Create a virtual environment
-
-```bash
-python -m venv venv
-source venv/bin/activate      # macOS/Linux
-venv\Scripts\activate         # Windows
-```
-
 ```bash
 pip install Flask
 ```
@@ -33,7 +25,7 @@ pip install Flask
 Before running the Flask app, create and populate the database:
 
 ```bash
-python database.py
+python3 database.py
 ```
 
 This will create `book_reviews.db` and all necessary tables.
@@ -41,7 +33,7 @@ This will create `book_reviews.db` and all necessary tables.
 ### Run the Flask application
 
 ```bash
-python app.py
+python3 app.py
 ```
 
 ### Open your browser
