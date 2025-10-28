@@ -13,6 +13,8 @@ The app uses **SQLite** as a local database and comes with preloaded book data.
 ### Clone the repository
 ```bash
 git clone https://github.com/Bozhinovska/EN_BookReviewApp.git
+````
+```bash
 cd EN_BookReviewApp
 ````
 
